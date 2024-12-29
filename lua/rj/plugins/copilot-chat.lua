@@ -7,8 +7,22 @@ return {
 		},
 		build = "make tiktoken", -- Only on MacOS or Linux
 		opts = {
-			-- See Configuration section for options
+			-- Plugin-specific options (if any)
 		},
-		-- See Commands section for default commands if you want to lazy load on them
+		config = function()
+			-- Require and configure the plugin
+			require("CopilotChat").setup({
+				-- Plugin options
+			})
+
+			-- Add keymaps here
+			local map = vim.api.nvim_set_keymap
+			local opts = { noremap = true, silent = true }
+
+			-- Example Keymaps
+			map("n", "<leader>cc", ":CopilotChat<CR>", opts) -- Open Copilot Chat
+			map("n", "<leader>cq", ":CopilotChatClose<CR>", opts) -- Close Copilot Chat
+			map("n", "<leader>cr", ":CopilotChatRequest<CR>", opts) -- Send request to Copilot Chat
+		end,
 	},
 }
