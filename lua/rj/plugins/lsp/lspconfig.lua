@@ -127,34 +127,68 @@ return {
 		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
+		-- import lspconfig plugin
+		local lspconfig = require("lspconfig")
+
 		-- Change diagnostic symbols in the sign column (Neovim 0.11+ style)
 		vim.diagnostic.config({
 			signs = {
 				text = {
-					[vim.diagnostic.severity.ERROR] = " ",
-					[vim.diagnostic.severity.WARN] = " ",
+					[vim.diagnostic.severity.ERROR] = " ",
+					[vim.diagnostic.severity.WARN] = " ",
 					[vim.diagnostic.severity.HINT] = "󰠠 ",
-					[vim.diagnostic.severity.INFO] = " ",
+					[vim.diagnostic.severity.INFO] = " ",
 				},
 			},
 		})
 
-		local servers = {
-			"ts_ls",
-			"html",
-			"cssls",
-			"tailwindcss",
-			"lua_ls",
-			"gopls",
-			"basedpyright",
-			"ruff",
-		}
-
+		-- configure servers with default settings
+		local servers = { "ts_ls", "html", "cssls", "tailwindcss" }
 		for _, server in ipairs(servers) do
-			vim.lsp.config(server, {
-				capabilities = capabilities,
-			})
+			lspconfig[server].setup({ capabilities = capabilities })
 		end
+
+		-- configure lua server (with special settings)
+		lspconfig.lua_ls.setup({
+			capabilities = capabilities,
+			settings = {
+				Lua = {
+					-- make the language server recognize "vim" global
+					diagnostics = {
+						globals = { "vim" },
+					},
+					completion = {
+						callSnippet = "Replace",
+					},
+				},
+			},
+		})
+
+		-- configure gopls server
+		lspconfig.gopls.setup({
+			capabilities = capabilities,
+			cmd = { "gopls" },
+			filetypes = { "go", "gomod", "gowork", "gotmpl" },
+		})
+
+		-- configure basedpyright server
+		lspconfig.basedpyright.setup({
+			capabilities = capabilities,
+			settings = {
+				basedpyright = {
+					analysis = {
+						autoImportCompletions = true,
+						autoSearchPaths = true,
+						diagnosticMode = "workspace",
+						reportUndefinedVariable = "error",
+						useLibraryCodeForTypes = true,
+					},
+				},
+			},
+		})
+
+		-- configure ruff server
+		lspconfig.ruff.setup({ capabilities = capabilities })
 
 		-- configure lua server (with special settings)
 		vim.lsp.config("lua_ls", {
