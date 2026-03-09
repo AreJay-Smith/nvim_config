@@ -32,8 +32,10 @@ return {
 				"cssls",
 				"tailwindcss",
 				"lua_ls",
-				"pyright",
+				"basedpyright",
+				"gopls",
 			},
+			automatic_enable = false,
 		})
 
 		mason_tool_installer.setup({
@@ -42,7 +44,7 @@ return {
 				"stylua", -- lua formatter
 				"isort", -- python formatter
 				"black", -- python formatter
-				"pylint",
+				"ruff", -- python linter
 				"eslint_d",
 			},
 		})
