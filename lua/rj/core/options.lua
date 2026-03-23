@@ -37,3 +37,6 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- auto save on more events (buffer/window switches, etc.)
 opt.autowriteall = true
+
+-- auto reload files changed outside of nvim
+opt.autoread = true
