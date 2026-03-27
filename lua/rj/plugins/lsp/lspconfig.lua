@@ -150,6 +150,7 @@ return {
 			"ruff",
 		}
 
+		-- apply shared capabilities to all servers
 		for _, server in ipairs(servers) do
 			vim.lsp.config(server, {
 				capabilities = capabilities,
@@ -158,7 +159,6 @@ return {
 
 		-- configure lua server (with special settings)
 		vim.lsp.config("lua_ls", {
-			capabilities = capabilities,
 			settings = {
 				Lua = {
 					-- make the language server recognize "vim" global
@@ -174,14 +174,12 @@ return {
 
 		-- configure gopls server
 		vim.lsp.config("gopls", {
-			capabilities = capabilities,
 			cmd = { "gopls" },
 			filetypes = { "go", "gomod", "gowork", "gotmpl" },
 		})
 
 		-- configure basedpyright server
 		vim.lsp.config("basedpyright", {
-			capabilities = capabilities,
 			settings = {
 				basedpyright = {
 					analysis = {
@@ -195,6 +193,7 @@ return {
 			},
 		})
 
+		-- enable all servers
 		for _, server in ipairs(servers) do
 			vim.lsp.enable(server)
 		end
